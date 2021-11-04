@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,5 +55,53 @@ class TodoItemControllerTest {
                 .andExpect(jsonPath("$[1].done").value(todoItem2.getDone()));
     }
 
+    @Test
+    void should_create_todoItem_when_post_given_text() throws Exception{
+        //given
+        TodoItem todoItem = new TodoItem("todo1", false);
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/todos").contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonMapper.writeValueAsString(todoItem))
+        );
+        //then
+        resultActions
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.text").value(todoItem.getText()))
+                .andExpect(jsonPath("$.done").value(todoItem.getDone()));
+    }
 
+    @Test
+    void should_update_todoItem_status_when_put_given_change_in_status() throws Exception{
+        //given
+        TodoItem todoItem = new TodoItem(1, "todo1", false);
+        TodoItem updated = todoItemRepository.save(todoItem);
+        updated.setDone(true);
+        //when
+        ResultActions result = mockMvc.perform(
+                put(String.format("/todos/%d", updated.getId()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonMapper.writeValueAsString(updated)));
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(updated.getId()))
+                .andExpect(jsonPath("$.text").value(updated.getText()))
+                .andExpect(jsonPath("$.done").value(updated.getDone()));
+
+    }
+
+    @Test
+    void should_delete_todoItem_when_delete_given_id() throws Exception{
+        //given
+        TodoItem todoItem = new TodoItem("todo1", false);
+        TodoItem saved = todoItemRepository.save(todoItem);
+        //then
+        assertEquals(1, todoItemRepository.findAll().size());
+        ResultActions result = mockMvc.perform(delete(String.format("/todos/%d", saved.getId())));
+        assertEquals(0, todoItemRepository.findAll().size());
+        result
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").doesNotExist());
+    }
 }

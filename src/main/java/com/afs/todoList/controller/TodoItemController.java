@@ -1,8 +1,10 @@
 package com.afs.todoList.controller;
+import com.afs.todoList.dto.TodoItemRequest;
+import com.afs.todoList.entity.TodoItem;
 import com.afs.todoList.mapper.TodoItemMapper;
 import com.afs.todoList.dto.TodoItemResponse;
-import com.afs.todoList.repository.TodoItemRepository;
 import com.afs.todoList.service.TodoItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +12,46 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/todos")
-@CrossOrigin(origins = "http://localhost:3000")
-public class TodoItemController {
-    private TodoItemRepository todoItemRepository;
-    private TodoItemMapper todoItemMapper;
 
-    public TodoItemController(TodoItemRepository todoItemRepository,  TodoItemMapper todoItemMapper) {
-        this.todoItemRepository = todoItemRepository;
+public class TodoItemController {
+    private final TodoItemService todoItemService;
+    private final TodoItemMapper todoItemMapper;
+
+    public TodoItemController(TodoItemService todoItemService,
+                              TodoItemMapper todoItemMapper) {
+        this.todoItemService = todoItemService;
         this.todoItemMapper = todoItemMapper;
     }
 
+    // Return all todoItem
     @GetMapping
+//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public List<TodoItemResponse> findAllTodoItems () {
-        return this.todoItemRepository.findAll().stream().map(item -> todoItemMapper.toResponse(item)).collect(Collectors.toList());
+        return this.todoItemService.findAll().stream().map(todoItemMapper::toResponse).collect(Collectors.toList());
+    }
+
+    // Post: create item
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    public TodoItemResponse createTodoItem (@RequestBody TodoItemRequest todoItemRequest){
+        return this.todoItemMapper.toResponse(todoItemService.createTodoItem(todoItemMapper.toEntity(todoItemRequest)));
+    }
+
+    // Put: update status
+    @PutMapping("/{id}")
+    // todo: why need ("id") ?
+//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+    public TodoItemResponse updateTodoItem (@PathVariable ("id") Integer id,
+                                    @RequestBody TodoItemRequest updatedTodoItemRequest){
+        return todoItemMapper.toResponse(this.todoItemService.updateTodoItem(id,
+                todoItemMapper.toEntity(updatedTodoItemRequest)));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable("id") Integer id) {
+        todoItemService.deleteById(id);
     }
 
 }
