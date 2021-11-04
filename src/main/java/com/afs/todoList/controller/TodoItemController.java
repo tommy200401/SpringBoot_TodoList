@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/todos")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TodoItemController {
     private TodoItemRepository todoItemRepository;
     private TodoItemMapper todoItemMapper;
