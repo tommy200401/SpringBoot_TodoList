@@ -24,8 +24,9 @@ class TodoItemServiceTest {
     @Test
     void should_get_all_todoItem_when_get_given_2_todoItems(){
         //given
-        List<TodoItem> todoItems = Arrays.asList(new TodoItem("todo1", false)
-                , new TodoItem("todo2", true));
+        List<TodoItem> todoItems = Arrays.asList(
+                new TodoItem("todo1", false),
+                new TodoItem("todo2", true));
         when(todoItemRepository.findAll()).thenReturn(todoItems);
         //when
         List<TodoItem> actualItems = todoItemService.findAll();

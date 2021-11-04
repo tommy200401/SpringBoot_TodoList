@@ -29,10 +29,10 @@ class TodoItemControllerTest {
     @Autowired
     ObjectMapper jsonMapper;
 
-//    @BeforeEach
-//    void setUp(){
-//        TodoItemRepository.deleteAll();
-//    }
+    @BeforeEach
+    void setUp(){
+        todoItemRepository.deleteAll();
+    }
 
     @Test
     void should_get_all_todoItem_when_get_given_2_todoItems() throws Exception{
@@ -46,10 +46,12 @@ class TodoItemControllerTest {
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].text").value("todo1"))
-                .andExpect(jsonPath("$[0].done").value(false))
-                .andExpect(jsonPath("$[1].text").value("todo2"))
-                .andExpect(jsonPath("$[1].done").value(true));
+                .andExpect(jsonPath("$[0].id").value(todoItem1.getId()))
+                .andExpect(jsonPath("$[0].text").value(todoItem1.getText()))
+                .andExpect(jsonPath("$[0].done").value(todoItem1.getDone()))
+                .andExpect(jsonPath("$[1].id").value(todoItem2.getId()))
+                .andExpect(jsonPath("$[1].text").value(todoItem2.getText()))
+                .andExpect(jsonPath("$[1].done").value(todoItem2.getDone()));
     }
 
 
