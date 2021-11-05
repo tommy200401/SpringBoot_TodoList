@@ -1,6 +1,5 @@
 package com.afs.todoList.controller;
 import com.afs.todoList.dto.TodoItemRequest;
-import com.afs.todoList.entity.TodoItem;
 import com.afs.todoList.mapper.TodoItemMapper;
 import com.afs.todoList.dto.TodoItemResponse;
 import com.afs.todoList.service.TodoItemService;
@@ -25,7 +24,6 @@ public class TodoItemController {
 
     // Return all todoItem
     @GetMapping
-//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public List<TodoItemResponse> findAllTodoItems () {
         return this.todoItemService.findAll().stream().map(todoItemMapper::toResponse).collect(Collectors.toList());
     }
@@ -33,15 +31,12 @@ public class TodoItemController {
     // Post: create item
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public TodoItemResponse createTodoItem (@RequestBody TodoItemRequest todoItemRequest){
         return this.todoItemMapper.toResponse(todoItemService.createTodoItem(todoItemMapper.toEntity(todoItemRequest)));
     }
 
     // Put: update status
     @PutMapping("/{id}")
-    // todo: why need ("id") ?
-//    @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
     public TodoItemResponse updateTodoItem (@PathVariable ("id") Integer id,
                                     @RequestBody TodoItemRequest updatedTodoItemRequest){
         return todoItemMapper.toResponse(this.todoItemService.updateTodoItem(id,

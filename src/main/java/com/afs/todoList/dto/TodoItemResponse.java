@@ -6,7 +6,8 @@ public class TodoItemResponse {
     private String text;
     private Boolean done;
 
-    public TodoItemResponse() {}
+    public TodoItemResponse() {
+    }
 
     public Integer getId() {
         return id;

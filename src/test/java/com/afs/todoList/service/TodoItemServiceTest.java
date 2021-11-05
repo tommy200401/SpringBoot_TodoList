@@ -23,7 +23,7 @@ class TodoItemServiceTest {
     TodoItemService todoItemService;
 
     @Test
-    void should_get_all_todoItem_when_get_given_2_todoItems(){
+    void should_get_all_todoItem_when_get_given_2_todoItems() {
         //given
         List<TodoItem> todoItems = Arrays.asList(
                 new TodoItem("todo1", false),

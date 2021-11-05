@@ -9,7 +9,8 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public ErrorResponse() {}
+    public ErrorResponse() {
+    }
 
     public Integer getCode() {
         return code;

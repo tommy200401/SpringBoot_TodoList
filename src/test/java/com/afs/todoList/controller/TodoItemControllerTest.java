@@ -31,12 +31,12 @@ class TodoItemControllerTest {
     ObjectMapper jsonMapper;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         todoItemRepository.deleteAll();
     }
 
     @Test
-    void should_get_all_todoItem_when_get_given_2_todoItems() throws Exception{
+    void should_get_all_todoItem_when_get_given_2_todoItems() throws Exception {
         //given
         TodoItem todoItem1 = new TodoItem("todo1", false);
         TodoItem todoItem2 = new TodoItem("todo2", true);
@@ -56,7 +56,7 @@ class TodoItemControllerTest {
     }
 
     @Test
-    void should_create_todoItem_when_post_given_text() throws Exception{
+    void should_create_todoItem_when_post_given_text() throws Exception {
         //given
         TodoItem todoItem = new TodoItem("todo1", false);
         //when
@@ -72,7 +72,7 @@ class TodoItemControllerTest {
     }
 
     @Test
-    void should_update_todoItem_status_when_put_given_change_in_status() throws Exception{
+    void should_update_todoItem_status_when_put_given_change_in_status() throws Exception {
         //given
         TodoItem todoItem = new TodoItem(1, "todo1", false);
         TodoItem updated = todoItemRepository.save(todoItem);
@@ -92,7 +92,7 @@ class TodoItemControllerTest {
     }
 
     @Test
-    void should_delete_todoItem_when_delete_given_id() throws Exception{
+    void should_delete_todoItem_when_delete_given_id() throws Exception {
         //given
         TodoItem todoItem = new TodoItem("todo1", false);
         TodoItem saved = todoItemRepository.save(todoItem);

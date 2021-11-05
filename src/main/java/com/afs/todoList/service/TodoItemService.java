@@ -15,20 +15,21 @@ public class TodoItemService {
         this.todoItemRepository = todoItemRepository;
     }
 
-    public List<TodoItem> findAll(){
-        return this.todoItemRepository.findAll();}
+    public List<TodoItem> findAll() {
+        return this.todoItemRepository.findAll();
+    }
 
-    public TodoItem createTodoItem (TodoItem todoItem){
+    public TodoItem createTodoItem(TodoItem todoItem) {
         return this.todoItemRepository.save(todoItem);
     }
 
     public TodoItem updateTodoItem(Integer id, TodoItem updatedTodoItem) {
         TodoItem originTodoItem =
                 todoItemRepository.findById(id).orElseThrow(TodoItemNotFoundException::new);
-        if (updatedTodoItem.getText() != null){
+        if (updatedTodoItem.getText() != null) {
             originTodoItem.setText(updatedTodoItem.getText());
         }
-        if (updatedTodoItem.getDone() != null){
+        if (updatedTodoItem.getDone() != null) {
             originTodoItem.setDone(updatedTodoItem.getDone());
         }
 

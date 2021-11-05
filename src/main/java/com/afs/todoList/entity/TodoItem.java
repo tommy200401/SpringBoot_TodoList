@@ -13,7 +13,8 @@ public class TodoItem {
     private String text;
     private Boolean done;
 
-    public TodoItem() {}
+    public TodoItem() {
+    }
 
     public TodoItem(String text, Boolean done) {
         this.text = text;
