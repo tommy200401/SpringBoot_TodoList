@@ -67,7 +67,7 @@ class TodoItemServiceTest {
         willDoNothing().given(todoItemRepository).deleteById(anyInt());
         todoItemRepository.deleteById(1);
         //then
-        verify(todoItemRepository).deleteById(anyInt());
+        verify(todoItemRepository).deleteById(1);
         verifyNoMoreInteractions(todoItemRepository);
     }
 
